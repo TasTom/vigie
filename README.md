@@ -4,7 +4,12 @@
 sécurité, cookies, politique CORS, chaîne de redirections.
 
 ```bash
-npx vigie exemple.fr
+# Sans installation
+npx github:TasTom/vigie exemple.fr
+
+# Ou en clonant
+git clone https://github.com/TasTom/vigie
+cd vigie && npm install && node cli.js exemple.fr
 ```
 
 ```
@@ -25,7 +30,8 @@ https://example.com/
       → Strict-Transport-Security: max-age=31536000; includeSubDomains
 ```
 
-Aucune dépendance, aucune clé, aucun déploiement : `node cli.js exemple.fr`.
+Aucune dépendance de production, aucune clé, aucun déploiement : une commande
+et le rapport s'affiche.
 
 ---
 
@@ -103,20 +109,28 @@ La sonde TLS **réutilise cette même résolution** plutôt que d'en écrire une
 sienne. Sinon l'analyse du certificat deviendrait un second point d'entrée
 indépendant : un nom refusé par le proxy accepté par la sonde, ou l'inverse.
 
-## Trouvaille de code, documentée parce qu'elle est contre-intuitive
+## Deux pièges rencontrés, documentés parce qu'ils sont invisibles
+
+**Le shebang manquant.** `package.json` déclare `cli.js` comme binaire via `bin`,
+et npm se contente de le *lier*. Sans shebang, l'installation par `npx` réussit,
+le fichier est bien présent, et l'exécution ne produit rien — aucune erreur, aucune
+sortie. Le défaut n'apparaît qu'après installation, jamais dans le dépôt où l'on
+lance toujours `node cli.js`.
+
+**`getSession().getCipher()` renvoie `undefined` sur Node 17+.**
 
 ```js
-// ✗ Ne fonctionne pas sur Node 17+
+// ✗ Ne fonctionne pas
 const chiffrement = socket.getSession().getCipher();  // undefined
 
 // ✓
 const chiffrement = socket.getCipher();
 ```
 
-La première forme renvoyait `undefined` et l'outil affichait « pas de
-chiffrement » sur une connexion parfaitement chiffrée. C'est le pire défaut
-qu'un outil de sécurité puisse avoir : il signale une absence qui n'existe pas,
-et son lecteur apprend à ignorer ses rapports. Un test la verrouille.
+La première forme affichait « pas de chiffrement » sur une connexion
+parfaitement chiffrée. C'est le pire défaut qu'un outil de sécurité puisse avoir :
+il signale une absence qui n'existe pas, et son lecteur apprend à ignorer ses
+rapports. Un test la verrouille.
 
 ## Tests
 

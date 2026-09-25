@@ -1,0 +1,43 @@
+{
+  "name": "vigie",
+  "version": "1.0.0",
+  "description": "Audit de la configuration de sécurité d'un site : TLS, en-têtes, cookies, CORS et chaîne de redirections. CLI et bibliothèque, sans dépendance.",
+  "main": "lib/index.js",
+  "bin": {
+    "vigie": "cli.js"
+  },
+  "files": [
+    "lib",
+    "cli.js",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "demo": "node cli.js example.com"
+  },
+  "keywords": [
+    "security",
+    "audit",
+    "tls",
+    "ssl",
+    "cors",
+    "cookies",
+    "hsts",
+    "csp",
+    "ssrf",
+    "http-headers"
+  ],
+  "license": "MIT",
+  "author": "Tom Tas",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TasTom/vigie.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.0"
+  }
+}

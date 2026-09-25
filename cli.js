@@ -1,11 +1,20 @@
+#!/usr/bin/env node
 /**
  * Vigie en ligne de commande.
  *
  *   node cli.js exemple.fr
  *   node cli.js exemple.fr --json
+ *   npx vigie exemple.fr
  *
  * L'outil tourne sans configuration, sans clé et sans déploiement : c'est ce
  * qui permet de le tester en une commande pendant un entretien.
+ *
+ * Le shebang ci-dessus n'est pas décoratif. `package.json` déclare ce fichier
+ * comme binaire via `bin`, et npm se contente de le **lier** : sans shebang,
+ * l'installation réussit, le fichier est bien présent, et l'exécution ne
+ * produit rien. Aucun message d'erreur — c'est ce qui rend le défaut si
+ * difficile à voir, et il n'apparaît qu'à l'installation par npx, pas dans le
+ * dépôt où l'on lance toujours `node cli.js`.
  */
 const { auditer } = require('./lib');
 
